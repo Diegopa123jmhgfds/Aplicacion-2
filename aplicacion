@@ -1,0 +1,135 @@
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre Completo"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/birthdayEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha de Nacimiento"
+        android:focusable="false"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/phoneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Teléfono"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción del contacto"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+<Button
+    android:id="@+id/nextButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Siguiente"
+    android:layout_margin="16dp"/>
+birthdayEditText.setOnClickListener {
+    val calendar = Calendar.getInstance()
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+    val datePickerDialog = DatePickerDialog(
+        this,
+        { _, selectedYear, selectedMonth, selectedDay ->
+            val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+            birthdayEditText.setText(selectedDate)
+        },
+        year, month, day
+    )
+    datePickerDialog.show()
+}
+<TextView
+    android:id="@+id/confirmationTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Confirmación de Datos"
+    android:textSize="18sp"
+    android:padding="16dp"/>
+
+<Button
+    android:id="@+id/editButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Editar Datos"
+    android:layout_margin="16dp"/>
+nextButton.setOnClickListener {
+    val intent = Intent(this, ConfirmationActivity::class.java)
+    intent.putExtra("name", nameEditText.text.toString())
+    intent.putExtra("birthday", birthdayEditText.text.toString())
+    intent.putExtra("phone", phoneEditText.text.toString())
+    intent.putExtra("email", emailEditText.text.toString())
+    intent.putExtra("description", descriptionEditText.text.toString())
+    startActivity(intent)
+}
+val name = intent.getStringExtra("name")
+val birthday = intent.getStringExtra("birthday")
+val phone = intent.getStringExtra("phone")
+val email = intent.getStringExtra("email")
+val description = intent.getStringExtra("description")
+
+confirmationTextView.text = "Nombre: $name\nFecha de Nacimiento: $birthday\nTeléfono: $phone\nEmail: $email\nDescripción: $description"
+
+editButton.setOnClickListener {
+    val editIntent = Intent(this, MainActivity::class.java)
+    editIntent.putExtra("name", name)
+    editIntent.putExtra("birthday", birthday)
+    editIntent.putExtra("phone", phone)
+    editIntent.putExtra("email", email)
+    editIntent.putExtra("description", description)
+    startActivity(editIntent)
+}
+val name = intent.getStringExtra("name") ?: ""
+val birthday = intent.getStringExtra("birthday") ?: ""
+val phone = intent.getStringExtra("phone") ?: ""
+val email = intent.getStringExtra("email") ?: ""
+val description = intent.getStringExtra("description") ?: ""
+
+nameEditText.setText(name)
+birthdayEditText.setText(birthday)
+phoneEditText.setText(phone)
+emailEditText.setText(email)
+descriptionEditText.setText(description)
+
